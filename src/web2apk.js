@@ -1,16 +1,38 @@
 const {getPageInfo, extend, download} = require('./functions');
 
-const runOnDevice = () => {
+const cordova = (action, config) => {
     console.log('Building...');
-    const cordova = require('child_process').spawn('cordova', [
-        'run',
-        'android',
-        '--device',
-        '--release',
-        '--buildConfig=build.json',
-    ]);
+
+    let params = [];
+    params.push(action);
+    params.push('android');
+    if (action === 'run') {
+        params.push('--device');
+    }
+    params.push('--release');
+    params.push('--buildConfig=build.json');
+
+    const cordova = require('child_process').spawn('cordova', params);
 
     cordova.stdout.on('data', (data) => {
+
+        let matches = String(data).match(/[^\n\t]+android-release\.apk$/);
+        if (matches && matches[0]) {
+            let build = matches[0];
+
+            if (action === 'build' && config.output) {
+                let copy = require('recursive-copy');
+                copy(build, config.output, {
+                    overwrite: true,
+                    finish: () => {
+                        console.log(`Build APK: ${config.output}`)
+                    }
+                });
+            } else {
+                console.log(`Build APK: ${build}`);
+            }
+        }
+
         if (String(data).search('BUILD SUCCESSFUL') >= 0) {
             console.log('[OK] Build success');
         }
@@ -58,7 +80,11 @@ const prepareProject = (path, config, callback) => {
             description: info.description,
         };
         let mergeConfig = extend(defaultConfig, config);
-        console.log(mergeConfig);
+        console.log(`\t package: ${mergeConfig.package}`);
+        console.log(`\t name: ${mergeConfig.name}`);
+        console.log(`\t icon: ${mergeConfig.icon}`);
+        console.log(`\t description: ${mergeConfig.description}`);
+        console.log(`\t url: ${mergeConfig.url}`);
 
         if (mergeConfig.icon) {
             download(mergeConfig.icon, `${path}/icon.png`, () => {
@@ -107,6 +133,6 @@ const prepareProject = (path, config, callback) => {
 };
 
 
-module.exports = {createTmp, prepareProject, runOnDevice};
+module.exports = {createTmp, prepareProject, cordova};
 
 

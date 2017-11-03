@@ -2,33 +2,49 @@
 
 const program = require('commander');
 
-
-const {createTmp, prepareProject, runOnDevice} = require('./src/web2apk');
+const {createTmp, prepareProject, cordova} = require('./src/web2apk');
 
 program
     .version('1.0.0')
     .description('Build APK from given web');
 
-program
-    .command('run <url>')
-    .description('Run application directly on ADB device')
-    .option('-d, --description <description>', 'Application description')
-    .option('-p, --package <description>', 'Package name, e.g. com.vendor.app_name. By default is the web domain')
-    .action((url, command) => {
+const buildOrRunAction = (url, command) => {
+    {
         if (!url.match(/https?:\/\//)) {
             throw 'Url schema is required ( http:// or https:// )'
         }
-
         let config = {
             package: 'com.web2apk.myapp',
             version: program.version(),
             url: url,
         };
 
+        let buildConfig = {
+            output: command.output
+        };
+
         createTmp((path) => {
-            prepareProject(path, config, runOnDevice);
+            prepareProject(path, config, () => {
+                cordova(command.name(), buildConfig)
+            });
         });
-    });
+    }
+};
+
+program
+    .command('build <url>')
+    .description('Build APK for given url')
+    .option('-d, --description <description>', 'Application description')
+    .option('-p, --package <description>', 'Package name, e.g. com.vendor.app_name. By default is the web domain')
+    .option('-o, --output <output>', 'Where the APK should be copied, full name. eg: /builds/example.apk')
+    .action(buildOrRunAction);
+
+program
+    .command('run <url>')
+    .description('Run application directly on ADB device')
+    .option('-d, --description <description>', 'Application description')
+    .option('-p, --package <description>', 'Package name, e.g. com.vendor.app_name. By default is the web domain')
+    .action(buildOrRunAction);
 
 program.parse(process.argv);
 
