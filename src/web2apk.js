@@ -38,10 +38,9 @@ const cordova = (action, config) => {
             if (action === 'build' && config.output) {
                 let copy = require('recursive-copy');
                 copy(build, config.output, {
-                    overwrite: true,
-                    finish: () => {
-                        console.log(`Build APK: ${config.output}`)
-                    }
+                    overwrite: true
+                }).on(copy.events.COPY_FILE_COMPLETE, () => {
+                    console.log(`Build APK: ${config.output}`)
                 });
             } else {
                 console.log(`Build APK: ${build}`);
