@@ -1,4 +1,4 @@
-# Web2APK
+# 🌎 ➡️ 📱 / Web2APK
 
 Cordova project and script to build android APK from given url
 
