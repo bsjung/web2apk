@@ -104,15 +104,13 @@ const prepareProject = (path, config, callback) => {
                 `${path}/www/js/index.js`,
             ],
             from: [
-                /\$APP_PACKAGE/g,
-                /\$APP_VERSION/g,
+                /com.ynloultratech.web2apk/g,
                 /\$APP_NAME/g,
                 /\$APP_DESCRIPTION/g,
                 /\$APP_URL/g
             ],
             to: [
                 config.package,
-                config.version,
                 config.name,
                 config.description,
                 config.url
