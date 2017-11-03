@@ -12,9 +12,9 @@ const cordova = (action, config) => {
     params.push('--release');
     params.push('--buildConfig=build.json');
 
-    const cordova = require('child_process').spawn('cordova', params);
+    const cordovaCmd = require('child_process').spawn('cordova', params);
 
-    cordova.stdout.on('data', (data) => {
+    cordovaCmd.stdout.on('data', (data) => {
 
         let matches = String(data).match(/[^\n\t]+android-release\.apk$/);
         if (matches && matches[0]) {
@@ -44,7 +44,7 @@ const cordova = (action, config) => {
         }
     });
 
-    cordova.stderr.on('data', (data) => {
+    cordovaCmd.stderr.on('data', (data) => {
         console.log(String(data));
 
         if (String(data).indexOf('Error: No platforms added to this project.') >= 0) {
@@ -55,6 +55,9 @@ const cordova = (action, config) => {
             ]);
             addPlatform.stdout.on('data', (data) => {
                 console.log(String(data));
+            });
+            addPlatform.on('exit', function () {
+                cordova(action, params);
             });
         }
     })
