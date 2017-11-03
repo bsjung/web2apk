@@ -1,6 +1,7 @@
 const {getPageInfo, extend, download} = require('./functions');
 
 const addAndroidPlatform = (callback) => {
+    console.log('Adding android platform');
     const addPlatform = require('child_process').spawn('cordova', [
         'platform',
         'add',
@@ -10,8 +11,12 @@ const addAndroidPlatform = (callback) => {
         console.log(String(data));
     });
     addPlatform.on('exit', function () {
+        console.log('Platform added');
         callback();
     });
+    addPlatform.stderr.on('data', (data) => {
+        console.log(String(data));
+    })
 };
 
 const cordova = (action, config) => {
@@ -101,6 +106,7 @@ const prepareProject = (path, config, callback) => {
         console.log(`\t url: ${mergeConfig.url}`);
 
         if (mergeConfig.icon) {
+            console.log(`Getting icon`);
             download(mergeConfig.icon, `${path}/icon.png`, () => {
                 prepareFilesAndBuild(mergeConfig);
             })
@@ -110,6 +116,7 @@ const prepareProject = (path, config, callback) => {
     });
 
     let prepareFilesAndBuild = function (config) {
+        console.log(`Preparing files`);
         const replace = require('replace-in-file');
         const options = {
             files: [
@@ -140,6 +147,7 @@ const prepareProject = (path, config, callback) => {
             if (typeof callback === 'function') {
                 process.chdir(path);
                 process.env.PWD = path;
+                console.log(`Files ready!`);
                 callback();
             }
         });
