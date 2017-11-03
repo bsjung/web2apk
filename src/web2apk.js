@@ -53,7 +53,7 @@ const cordova = (action, config) => {
                 'add',
                 'android@6.3.0'
             ]);
-            cordova.stdout.on('data', (data) => {
+            addPlatform.stdout.on('data', (data) => {
                 console.log(String(data));
             });
         }
