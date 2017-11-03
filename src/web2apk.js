@@ -46,6 +46,17 @@ const cordova = (action, config) => {
 
     cordova.stderr.on('data', (data) => {
         console.log(String(data));
+
+        if (String(data).indexOf('Error: No platforms added to this project.') >= 0) {
+            const addPlatform = require('child_process').spawn('cordova', [
+                'platform',
+                'add',
+                'android@6.3.0'
+            ]);
+            cordova.stdout.on('data', (data) => {
+                console.log(String(data));
+            });
+        }
     })
 };
 
@@ -104,13 +115,15 @@ const prepareProject = (path, config, callback) => {
                 `${path}/www/js/index.js`,
             ],
             from: [
-                /com.ynloultratech.web2apk/g,
+                /\$APP_PACKAGE/g,
+                /\$APP_VERSION/g,
                 /\$APP_NAME/g,
                 /\$APP_DESCRIPTION/g,
                 /\$APP_URL/g
             ],
             to: [
                 config.package,
+                config.version,
                 config.name,
                 config.description,
                 config.url
