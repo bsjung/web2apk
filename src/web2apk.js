@@ -45,8 +45,6 @@ const cordova = (action, config) => {
     });
 
     cordovaCmd.stderr.on('data', (data) => {
-        console.log(String(data));
-
         if (String(data).indexOf('Error: No platforms added to this project.') >= 0) {
             const addPlatform = require('child_process').spawn('cordova', [
                 'platform',
@@ -59,6 +57,8 @@ const cordova = (action, config) => {
             addPlatform.on('exit', function () {
                 cordova(action, params);
             });
+        } else {
+            console.log(String(data));
         }
     })
 };
