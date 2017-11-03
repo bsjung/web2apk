@@ -1,0 +1,10 @@
+{
+  "android": {
+    "release": {
+      "keystore": "web2apk-key.jks",
+      "storePassword": "web2apk",
+      "alias": "web2apk",
+      "password": "web2apk"
+    }
+  }
+}

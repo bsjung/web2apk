@@ -1,12 +1,27 @@
 {
-    "name": "com.ynloultratech.web2apk",
-    "displayName": "HelloCordova",
-    "version": "1.0.0",
-    "description": "A sample Apache Cordova application that responds to the deviceready event.",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "Apache Cordova Team",
-    "license": "Apache-2.0"
+  "name": "web2apk",
+  "displayName": "Web2Apk",
+  "version": "1.0.0",
+  "author": "YnloUnltratech Development Team",
+  "preferGlobal": true,
+  "bin": "./web2apk",
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-whitelist": {}
+    }
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "commander": "^2.11.0",
+    "cordova-android": "^6.3.0",
+    "cordova-plugin-whitelist": "^1.3.2",
+    "node-fetch": "^1.7.3",
+    "recursive-copy": "^2.0.7",
+    "replace-in-file": "^3.0.0",
+    "request": "^2.83.0",
+    "tmp": "0.0.33"
+  }
 }

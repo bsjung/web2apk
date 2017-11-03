@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+const program = require('commander');
+
+
+const {createTmp, prepareProject, runOnDevice} = require('./src/web2apk');
+
+program
+    .version('1.0.0')
+    .description('Build APK from given web');
+
+program
+    .command('run <url>')
+    .description('Run application directly on ADB device')
+    .option('-d, --description <description>', 'Application description')
+    .option('-p, --package <description>', 'Package name, e.g. com.vendor.app_name. By default is the web domain')
+    .action((url, command) => {
+        if (!url.match(/https?:\/\//)) {
+            throw 'Url schema is required ( http:// or https:// )'
+        }
+
+        let config = {
+            package: 'com.web2apk.myapp',
+            version: program.version(),
+            url: url,
+        };
+
+        createTmp((path) => {
+            prepareProject(path, config, runOnDevice);
+        });
+    });
+
+program.parse(process.argv);
+
+
