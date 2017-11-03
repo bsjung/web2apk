@@ -2,7 +2,7 @@
 
 const program = require('commander');
 
-const {createTmp, prepareProject, cordova} = require('./src/web2apk');
+const {createTmp, prepareProject, addAndroidPlatform, cordova} = require('./src/web2apk');
 
 program
     .version('1.0.0')
@@ -25,7 +25,9 @@ const buildOrRunAction = (url, command) => {
 
         createTmp((path) => {
             prepareProject(path, config, () => {
-                cordova(command.name(), buildConfig)
+                addAndroidPlatform(() => {
+                    cordova(command.name(), buildConfig)
+                })
             });
         });
     }

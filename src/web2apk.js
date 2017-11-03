@@ -1,5 +1,19 @@
 const {getPageInfo, extend, download} = require('./functions');
 
+const addAndroidPlatform = (callback) => {
+    const addPlatform = require('child_process').spawn('cordova', [
+        'platform',
+        'add',
+        'android@6.3.0'
+    ]);
+    addPlatform.stdout.on('data', (data) => {
+        console.log(String(data));
+    });
+    addPlatform.on('exit', function () {
+        callback();
+    });
+};
+
 const cordova = (action, config) => {
     console.log('Building...');
 
@@ -43,24 +57,6 @@ const cordova = (action, config) => {
             console.log('[OK] Launch success');
         }
     });
-
-    cordovaCmd.stderr.on('data', (data) => {
-        if (String(data).indexOf('Error: No platforms added to this project.') >= 0) {
-            const addPlatform = require('child_process').spawn('cordova', [
-                'platform',
-                'add',
-                'android@6.3.0'
-            ]);
-            addPlatform.stdout.on('data', (data) => {
-                console.log(String(data));
-            });
-            addPlatform.on('exit', function () {
-                cordova(action, params);
-            });
-        } else {
-            console.log(String(data));
-        }
-    })
 };
 
 const createTmp = (callback) => {
@@ -147,6 +143,6 @@ const prepareProject = (path, config, callback) => {
 };
 
 
-module.exports = {createTmp, prepareProject, cordova};
+module.exports = {createTmp, prepareProject, addAndroidPlatform, cordova};
 
 
