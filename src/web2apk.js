@@ -102,7 +102,14 @@ const prepareProject = (path, config, callback) => {
 
         if (mergeConfig.icon) {
             download(mergeConfig.icon, `${path}/icon.png`, () => {
-                prepareFilesAndBuild(mergeConfig);
+                let fs = require('fs'), PNG = require('node-png').PNG;
+                fs.createReadStream(`${path}/icon.png`)
+                    .pipe(new PNG({}))
+                    .on('parsed', function () {
+                        this.pack().pipe(fs.createWriteStream(`${path}/icon.png`)).on('close', () => {
+                            prepareFilesAndBuild(mergeConfig)
+                        });
+                    });
             })
         } else {
             prepareFilesAndBuild(mergeConfig);
