@@ -29,6 +29,7 @@ const cordova = (action, config) => {
     const cordovaCmd = require('child_process').spawn('cordova', params);
 
     cordovaCmd.stdout.on('data', (data) => {
+        console.log(String(data));
 
         let matches = String(data).match(/[^\n\t]+android-release\.apk$/);
         if (matches && matches[0]) {
@@ -57,6 +58,10 @@ const cordova = (action, config) => {
             console.log('[OK] Launch success');
         }
     });
+
+    cordovaCmd.stderr.on('data', (data) => {
+        console.log(String(data));
+    })
 };
 
 const createTmp = (callback) => {
