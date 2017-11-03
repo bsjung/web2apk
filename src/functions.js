@@ -110,7 +110,7 @@ function download(uri, filename, callback) {
 
         request(uri)
             .on('error', () => {
-                callback();
+                stream.close();
             })
             .pipe(stream)
             .on('close', callback);
