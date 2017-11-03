@@ -105,11 +105,15 @@ function extend(target) {
 function download(uri, filename, callback) {
     let request = require('request'), fs = require('fs');
     request.head(uri, function (err, res, body) {
+
+        let stream = fs.createWriteStream(filename);
+
         request(uri)
             .on('error', () => {
+                stream.close();
                 callback();
             })
-            .pipe(fs.createWriteStream(filename))
+            .pipe(stream)
             .on('close', callback);
     });
 
