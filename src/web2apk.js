@@ -3,7 +3,7 @@ const {getPageInfo, extend, download} = require('./functions');
 const addAndroidPlatform = (callback) => {
     let fileExistSync = require('./fileExistSync');
 
-    if (fileExistSync('./platforms/android')){
+    if (fileExistSync('./platforms/android')) {
         console.log('Using existent android platform');
         callback();
         return;
@@ -52,8 +52,12 @@ const cordova = (action, config) => {
                 let copy = require('recursive-copy');
                 copy(build, config.output, {
                     overwrite: true
+                }).on(copy.events.COPY_FILE_START, () => {
+                    console.log(`Copying file to: ${config.output}`)
                 }).on(copy.events.COPY_FILE_COMPLETE, () => {
                     console.log(`Build APK: ${config.output}`)
+                }).on(copy.events.COPY_FILE_ERROR, (error) => {
+                    console.log(`Error copying the file: ${error}`)
                 });
             } else {
                 console.log(`Build APK: ${build}`);
