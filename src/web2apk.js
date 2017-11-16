@@ -1,6 +1,14 @@
 const {getPageInfo, extend, download} = require('./functions');
 
 const addAndroidPlatform = (callback) => {
+    let fileExistSync = require('./fileExistSync');
+
+    if (fileExistSync('./platforms/android')){
+        console.log('Using existent android platform');
+        callback();
+        return;
+    }
+
     console.log('Adding android platform');
     const addPlatform = require('child_process').spawn('cordova', [
         'platform',
