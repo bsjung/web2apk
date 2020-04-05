@@ -1,8 +1,8 @@
 {
   "name": "web2apk",
   "displayName": "Web2Apk",
-  "version": "1.0.0",
-  "author": "YnloUnltratech Development Team",
+  "version": "1.1.0",
+  "author": "App24 Development Team",
   "preferGlobal": true,
   "bin": "./web2apk",
   "cordova": {
