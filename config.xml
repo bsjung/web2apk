@@ -5,8 +5,8 @@
      xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>$APP_NAME</name>
     <description>$APP_DESCRIPTION</description>
-    <author email="developer@ynloultratech.com" href="https://github.com/ynloultratech">
-        YnloUltratech Team
+    <author email="app24kr@gmail.com" href="https://github.com/app24kr">
+        App24kr Team
     </author>
     <content src="index.html" />
     <access origin="*" />
