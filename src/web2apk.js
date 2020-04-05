@@ -13,7 +13,7 @@ const addAndroidPlatform = (callback) => {
     const addPlatform = require('child_process').spawn('cordova', [
         'platform',
         'add',
-        'android@6.3.0'
+        'android@8.1.0'
     ]);
     addPlatform.stdout.on('data', (data) => {
         console.log(String(data));
@@ -86,7 +86,7 @@ const createTmp = (callback) => {
 
     console.log('Creating tmp files');
 
-    tmp.dir({unsafeCleanup: true}, (err, path) => {
+    tmp.dir({unsafeCleanup: false}, (err, path) => {
         if (err) throw err;
 
         copy(process.cwd(), path, () => {
