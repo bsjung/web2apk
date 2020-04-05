@@ -62,6 +62,7 @@ const getPageInfo = (url) => {
     return fetch(url)
         .then(response => {
             url = response.url;
+            //console.log ("[DEBUG] getPageInfo url ", url);
             return response.text();
         })
         .then((html) => {
@@ -92,6 +93,8 @@ const getPageInfo = (url) => {
             }
 
             if (icon) {
+                icon = icon.replace("https", "http");
+                //console.log ("[DEBUG] getPageInfo icon ", icon);
                 icon = relativeToAbsolute(url, icon);
             }
 

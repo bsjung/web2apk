@@ -86,7 +86,7 @@ const createTmp = (callback) => {
 
     console.log('Creating tmp files');
 
-    tmp.dir({unsafeCleanup: false}, (err, path) => {
+    tmp.dir({unsafeCleanup: true}, (err, path) => {
         if (err) throw err;
 
         copy(process.cwd(), path, () => {

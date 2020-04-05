@@ -18,6 +18,7 @@ const buildOrRunAction = (url, command) => {
             version: program.version(),
             url: url,
         };
+        console.log("[DEBUG] config", config);
 
         let buildConfig = {
             output: command.output
